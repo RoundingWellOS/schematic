@@ -44,6 +44,7 @@ class SchemaTest extends TestCase
 
         $this->assertTrue($schema->isArray());
         $this->assertTrue($schema->items()->isString());
+        $this->assertSame('string[]', $schema->phpType());
     }
 
     public function testBoolean()
@@ -53,6 +54,7 @@ class SchemaTest extends TestCase
         ]));
 
         $this->assertTrue($schema->isBoolean());
+        $this->assertSame('bool', $schema->phpType());
     }
 
     public function testInteger()
@@ -62,6 +64,7 @@ class SchemaTest extends TestCase
         ]));
 
         $this->assertTrue($schema->isInteger());
+        $this->assertSame('int', $schema->phpType());
     }
 
     public function testNull()
@@ -71,6 +74,7 @@ class SchemaTest extends TestCase
         ]));
 
         $this->assertTrue($schema->isNull());
+        $this->assertSame('null', $schema->phpType());
     }
 
     public function testNumber()
@@ -80,6 +84,7 @@ class SchemaTest extends TestCase
         ]));
 
         $this->assertTrue($schema->isNumber());
+        $this->assertSame('float', $schema->phpType());
     }
 
     public function testObject()
@@ -95,6 +100,7 @@ class SchemaTest extends TestCase
 
         $this->assertTrue($schema->isObject());
         $this->assertTrue(is_array($schema->properties()));
+        $this->assertSame('object', $schema->phpType());
     }
 
     public function testString()
@@ -104,6 +110,7 @@ class SchemaTest extends TestCase
         ]));
 
         $this->assertTrue($schema->isString());
+        $this->assertSame('string', $schema->phpType());
     }
 
     /**

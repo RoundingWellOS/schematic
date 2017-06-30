@@ -6,6 +6,11 @@ use RoundingWell\Schematic\Schema;
 
 class ObjectSchema extends Schema
 {
+    public function phpType()
+    {
+        return 'object';
+    }
+
     /**
      * @return Schema[]
      */

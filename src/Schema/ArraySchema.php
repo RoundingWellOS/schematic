@@ -6,6 +6,11 @@ use RoundingWell\Schematic\Schema;
 
 class ArraySchema extends Schema
 {
+    public function phpType()
+    {
+        return $this->items()->phpType() . '[]';
+    }
+
     /**
      * @return Schema
      */

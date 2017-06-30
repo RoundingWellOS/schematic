@@ -8,6 +8,20 @@
         "lastName": {
             "type": "string"
         },
+        "address": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "city": {
+                    "type": "string"
+                },
+                "zip": {
+                    "type": "string"
+                }
+            }
+        },
         "age": {
             "description": "Age in years",
             "type": "integer",

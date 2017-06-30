@@ -6,4 +6,8 @@ use RoundingWell\Schematic\Schema;
 
 class NumberSchema extends Schema
 {
+    public function phpType()
+    {
+        return 'float';
+    }
 }

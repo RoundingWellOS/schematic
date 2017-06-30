@@ -86,6 +86,11 @@ abstract class Schema
         return $this->schema->type;
     }
 
+    /**
+     * @return string
+     */
+    abstract public function phpType();
+
     public function isArray()
     {
         return $this->type() === 'array';
