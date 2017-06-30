@@ -1,2 +1,211 @@
-# json-schema-generator
-Generate POPO from JSON Schema
+# Schematic
+
+[![Latest Stable Version](https://img.shields.io/packagist/v/rwos/schematic.svg)](https://packagist.org/packages/rwos/schematic)
+[![License](https://img.shields.io/packagist/l/rwos/schematic.svg)](https://github.com/RoundingWellOS/schematic/blob/master/LICENSE)
+[![Build Status](https://travis-ci.org/RoundingWellOS/schematic.svg)](https://travis-ci.org/RoundingWellOS/schematic)
+[![Code Coverage](https://scrutinizer-ci.com/g/RoundingWellOS/schematic/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/RoundingWellOS/schematic/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/RoundingWellOS/schematic/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/RoundingWellOS/schematic/?branch=master)
+
+Schematic is a [JSON Schema](http://json-schema.org/) parser that also supports
+Plain Old PHP Object (POPO) code generation. These generated models can either be
+used for as a starting point for domain entities or simply provide additional
+structure for JSON request bodies.
+
+Strives for [PSR-1][psr-1], [PSR-2][psr-2], and [PSR-4][psr-4] compliance.
+
+[psr-1]: http://www.php-fig.org/psr/psr-1/
+[psr-2]: http://www.php-fig.org/psr/psr-2/
+[psr-4]: http://www.php-fig.org/psr/psr-4/
+
+## Install
+
+```
+composer require rwos/schematic
+```
+
+## Examples
+
+The `example/` directory contains a number of examples.
+
+### Schema Parsing
+
+Given the following schema in `car.json`:
+
+```json
+{
+    "type": "object",
+    "properties": {
+        "make": {
+            "type": "string"
+        },
+        "model": {
+            "type": "string"
+        },
+        "year": {
+            "type": "integer"
+        },
+        "owners": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "isCurrentOwner": {
+                        "type": "boolean"
+                    }
+                },
+                "required": ["name"]
+            }
+        }
+    },
+    "required": ["make", "model"]
+}
+```
+
+First the schema needs to be parsed:
+
+```php
+use RoundingWell\Schematic\Schema;
+
+$schema = Schema::fromFile('car.json');
+
+assert($schema->isObject());
+```
+
+When the schema is an object the properties can be accessed:
+
+```php
+$properties = $schema->properties();
+
+assert(is_array($properties));
+assert(isset($properties['make']));
+assert(isset($properties['owners']));
+```
+
+And can be checked for required properties:
+
+```php
+assert($schema->isRequired('make'));
+assert($schema->isRequired('year') === false);
+```
+
+Array items provide additional details about contents:
+
+```php
+$items = $properties['owners']->items();
+
+assert($items->isObject());
+```
+
+### Code Generation
+
+Generated classes are extremely basic, plain PHP objects from schemas.
+
+```php
+use RoundingWell\Schematic\Generator;
+
+$generator = new Generator();
+```
+
+The generator can create an [AST][php-ast] from an object schema, as well as
+additional classes for object properties.
+
+[php-ast]: https://github.com/nikic/PHP-Parser/blob/master/doc/0_Introduction.markdown
+
+
+```php
+$classes = $generator->generate($schema, 'Acme\Model\Car', 'Acme\Model');
+```
+
+This will create an `Acme\Model\Car` class that extends `Acme\Model`. Any object
+properties in the schema will also be created. Once the classes have been generated
+they can be written to a directory:
+
+```php
+$files = $generator->write($classes, 'src/');
+```
+
+The writer will convert the AST into code, write to `src/`, and return the
+files that were created.
+
+### Complete Example
+
+Putting it all together, here is a complete example for code generation:
+
+```php
+use RoundingWell\Schematic\Generator;
+use RoundingWell\Schematic\Schema;
+
+$generator = new Generator();
+$schema = Schema::fromFile('car.json');
+$classes = $generator->generate($schema);
+$files = $generator->write($classes, 'src/', 'Acme\Model');
+```
+
+_**Note:** The last parameter to `write()` the [PSR-4][psr-4] namespace of your
+project. When provided, this namespace will be removed from the file path._
+
+The source of `src/Car.php` will be:
+
+```php
+<?php
+
+namespace Acme\Model;
+
+class Car
+{
+    /**
+     * @var string
+     */
+    public $vin;
+    /**
+     * @var string|null
+     */
+    public $make;
+    /**
+     * @var string|null
+     */
+    public $model;
+    /**
+     * @var int|null
+     */
+    public $year;
+    /**
+     * @var \Acme\Model\Car\Owner[]
+     */
+    public $owners;
+}
+```
+
+And the source of `src/Car/Owner.php` will be:
+
+```php
+<?php
+
+namespace Acme\Model\Car;
+
+class Owner
+{
+    /**
+     * @var string
+     */
+    public $name;
+    /**
+     * @var bool|null
+     */
+    public $isCurrentOwner;
+}
+```
+
+## Recommendations
+
+Models generated by Schematic do not include functionality to populate the model
+from JSON. We recommend using using [JsonMapper][jsonmapper] or a similar hydrator.
+
+[jsonmapper]: https://packagist.org/packages/netresearch/jsonmapper
+
+## License
+
+Apache 2.0

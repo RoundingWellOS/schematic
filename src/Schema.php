@@ -2,14 +2,6 @@
 
 namespace RoundingWell\Schematic;
 
-use RoundingWell\Schematic\Schema\ArraySchema;
-use RoundingWell\Schematic\Schema\BooleanSchema;
-use RoundingWell\Schematic\Schema\IntegerSchema;
-use RoundingWell\Schematic\Schema\NullSchema;
-use RoundingWell\Schematic\Schema\NumberSchema;
-use RoundingWell\Schematic\Schema\ObjectSchema;
-use RoundingWell\Schematic\Schema\StringSchema;
-
 abstract class Schema
 {
     /**
@@ -27,31 +19,31 @@ abstract class Schema
     public static function make($json): Schema
     {
         if ($json->type === 'array') {
-            return new ArraySchema($json);
+            return new Schema\ArraySchema($json);
         }
 
         if ($json->type === 'boolean') {
-            return new BooleanSchema($json);
+            return new Schema\BooleanSchema($json);
         }
 
         if ($json->type === 'integer') {
-            return new IntegerSchema($json);
+            return new Schema\IntegerSchema($json);
         }
 
         if ($json->type === 'null') {
-            return new NullSchema($json);
+            return new Schema\NullSchema($json);
         }
 
         if ($json->type === 'number') {
-            return new NumberSchema($json);
+            return new Schema\NumberSchema($json);
         }
 
         if ($json->type === 'object') {
-            return new ObjectSchema($json);
+            return new Schema\ObjectSchema($json);
         }
 
         if ($json->type === 'string') {
-            return new StringSchema($json);
+            return new Schema\StringSchema($json);
         }
 
         // @codeCoverageIgnoreStart
@@ -66,11 +58,6 @@ abstract class Schema
      * @var object
      */
     protected $schema;
-
-    /**
-     * @var boolean
-     */
-    protected $isRequired = false;
 
     public function __construct($schema)
     {
