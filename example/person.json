@@ -1,0 +1,47 @@
+{
+    "title": "Person",
+    "type": "object",
+    "properties": {
+        "firstName": {
+            "type": "string"
+        },
+        "lastName": {
+            "type": "string"
+        },
+        "age": {
+            "description": "Age in years",
+            "type": "integer",
+            "minimum": 0
+        },
+        "favoriteFoods": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "weight": {
+            "type": "number"
+        },
+        "nationality": {
+            "type": "null"
+        },
+        "isDeceased": {
+            "type": "boolean"
+        },
+        "friends": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "firstName": {
+                        "type": "string"
+                    },
+                    "lastName": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    },
+    "required": ["firstName", "lastName"]
+}
