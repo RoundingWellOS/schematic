@@ -1,0 +1,30 @@
+language: php
+
+php:
+  - 7.0
+  - 7.1
+  - nightly
+
+env: MINIMUM_VERSIONS=false
+
+matrix:
+  fast_finish: true
+  include:
+    - php: 7.0
+      env: MINIMUM_VERSIONS=true
+  allow_failures:
+    - php: nightly
+
+install:
+  - if [[ $MINIMUM_VERSIONS = false ]]; then composer install; fi
+  - if [[ $MINIMUM_VERSIONS = true ]]; then composer update --no-interaction --prefer-lowest; fi
+
+script:
+  - composer test
+
+after_script:
+  - |
+    if [ -f "build/logs/clover.xml" ]; then
+      wget https://scrutinizer-ci.com/ocular.phar
+      php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
+    fi
