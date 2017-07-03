@@ -9,11 +9,21 @@ class ArraySchema extends Schema
 {
     public function phpType(): string
     {
-        return $this->items()->phpType() . '[]';
+        if ($this->hasItems()) {
+            return $this->items()->phpType() . '[]';
+        }
+
+        return 'array';
     }
 
-    public function items(): Schema
+    public function hasItems(): bool
     {
-        return Schema::make($this->schema->items);
+        return isset($this->schema->items)
+            && isset($this->schema->items->type);
+    }
+
+    public function items(): ?Schema
+    {
+        return $this->hasItems() ? Schema::make($this->schema->items) : null;
     }
 }

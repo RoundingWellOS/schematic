@@ -43,8 +43,18 @@ class SchemaTest extends TestCase
         ]));
 
         $this->assertTrue($schema->isArray());
+        $this->assertTrue($schema->hasItems());
         $this->assertTrue($schema->items()->isString());
         $this->assertSame('string[]', $schema->phpType());
+
+        $schema = Schema::make($this->makeJsonObject([
+            'type' => 'array',
+        ]));
+
+        $this->assertTrue($schema->isArray());
+        $this->assertFalse($schema->hasItems());
+        $this->assertNull($schema->items());
+        $this->assertSame('array', $schema->phpType());
     }
 
     public function testBoolean()
