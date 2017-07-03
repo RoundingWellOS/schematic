@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace RoundingWell\Schematic;
 
+use Doctrine\Common\Inflector\Inflector;
 use PhpParser\BuilderFactory;
 use PhpParser\Node\Name;
 use PhpParser\Node\Stmt\Class_ as Cls;
@@ -69,7 +70,7 @@ class Generator
                 ));
             } elseif ($property->isArray() && $property->hasItems() && $property->items()->isObject()) {
                 // Create a new class for this array of properties
-                $nextClass = Name::concat($className, ucfirst(singular($name)));
+                $nextClass = Name::concat($className, ucfirst(Inflector::singularize($name)));
                 $typeHint = '\\' . $nextClass->toString() . '[]';
                 $classes = array_merge($classes, $this->generate(
                     $property->items(),
