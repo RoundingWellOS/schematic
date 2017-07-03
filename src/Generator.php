@@ -67,7 +67,7 @@ class Generator
                     $nextClass->toString(),
                     $baseClass
                 ));
-            } elseif ($property->isArray() && $property->items()->isObject()) {
+            } elseif ($property->isArray() && $property->hasItems() && $property->items()->isObject()) {
                 // Create a new class for this array of properties
                 $nextClass = Name::concat($className, ucfirst(singular($name)));
                 $typeHint = '\\' . $nextClass->toString() . '[]';
