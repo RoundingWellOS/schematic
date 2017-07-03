@@ -49,7 +49,7 @@ abstract class Schema
         // @codeCoverageIgnoreStart
         throw new \InvalidArgumentException(sprintf(
             "No schema type available for %s",
-            $schema->type
+            $json->type
         ));
         // @codeCoverageIgnoreEnd
     }
