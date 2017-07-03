@@ -16,16 +16,15 @@ abstract class Schema
      * @param string $path
      * @return static
      */
-    public static function fromFile($path)
+    public static function fromFile($path): Schema
     {
         return self::make(json_decode(file_get_contents($path)));
     }
 
     /**
      * @param object $json
-     * @return static
      */
-    public static function make($json)
+    public static function make($json): Schema
     {
         if ($json->type === 'array') {
             return new ArraySchema($json);
@@ -78,64 +77,55 @@ abstract class Schema
         $this->schema = $schema;
     }
 
-    /**
-     * @return string
-     */
-    public function type()
+    public function type(): string
     {
         return $this->schema->type;
     }
 
-    /**
-     * @return string
-     */
-    abstract public function phpType();
+    abstract public function phpType(): string;
 
-    public function isArray()
+    public function isArray(): bool
     {
         return $this->type() === 'array';
     }
 
-    public function isBoolean()
+    public function isBoolean(): bool
     {
         return $this->type() === 'boolean';
     }
 
-    public function isInteger()
+    public function isInteger(): bool
     {
         return $this->type() === 'integer';
     }
 
-    public function isNull()
+    public function isNull(): bool
     {
         return $this->type() === 'null';
     }
 
-    public function isNumber()
+    public function isNumber(): bool
     {
         return $this->type() === 'number';
     }
 
-    public function isObject()
+    public function isObject(): bool
     {
         return $this->type() === 'object';
     }
 
-    public function isString()
+    public function isString(): bool
     {
         return $this->type() === 'string';
     }
 
-    public function hasTitle()
+    public function hasTitle(): bool
     {
         return isset($this->schema->title);
     }
 
-    /**
-     * @return string|null
-     */
-    public function title()
+    public function title(): string
     {
-        return $this->hasTitle() ? $this->schema->title : null;
+        return $this->hasTitle() ? $this->schema->title : '';
     }
 }

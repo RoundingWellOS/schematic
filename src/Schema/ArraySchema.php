@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace RoundingWell\Schematic\Schema;
 
@@ -6,15 +7,12 @@ use RoundingWell\Schematic\Schema;
 
 class ArraySchema extends Schema
 {
-    public function phpType()
+    public function phpType(): string
     {
         return $this->items()->phpType() . '[]';
     }
 
-    /**
-     * @return Schema
-     */
-    public function items()
+    public function items(): Schema
     {
         return Schema::make($this->schema->items);
     }
