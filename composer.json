@@ -11,9 +11,6 @@
     ],
     "minimum-stability": "stable",
     "autoload": {
-        "files": [
-            "src/functions.php"
-        ],
         "psr-4": {
             "RoundingWell\\Schematic\\": "src/"
         }
@@ -25,6 +22,7 @@
     },
     "require": {
         "php": ">=7.1",
+        "doctrine/inflector": "^1.1",
         "nikic/php-parser": "^3.0"
     },
     "require-dev": {
