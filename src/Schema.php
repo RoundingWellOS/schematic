@@ -106,13 +106,8 @@ abstract class Schema
         return $this->type() === 'string';
     }
 
-    public function hasTitle(): bool
-    {
-        return isset($this->schema->title);
-    }
-
     public function title(): string
     {
-        return $this->hasTitle() ? $this->schema->title : '';
+        return $this->schema->title ?? '';
     }
 }
