@@ -129,7 +129,17 @@ class SchemaTest extends TestCase
         $this->expectExceptionMessage('No schema type available for invalid.');
 
         Schema::make($this->makeJsonObject([
-            'type' => 'invalid',
+            'type' => 'invalid'
+        ]));
+    }
+
+    public function testMissingType()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Missing schema type.');
+
+        Schema::make($this->makeJsonObject([
+            'foo' => 'bar'
         ]));
     }
 

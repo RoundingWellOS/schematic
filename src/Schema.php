@@ -18,6 +18,10 @@ abstract class Schema
      */
     public static function make($json): Schema
     {
+        if ( ! isset($json->type)) {
+            throw new \InvalidArgumentException('Missing schema type.');
+        }
+
         if ($json->type === 'array') {
             return new Schema\ArraySchema($json);
         }
