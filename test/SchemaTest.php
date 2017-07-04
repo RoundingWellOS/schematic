@@ -123,6 +123,16 @@ class SchemaTest extends TestCase
         $this->assertSame('string', $schema->phpType());
     }
 
+    public function testInvalidType()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('No schema type available for invalid.');
+
+        Schema::make($this->makeJsonObject([
+            'type' => 'invalid',
+        ]));
+    }
+
     /**
      * @return object
      */

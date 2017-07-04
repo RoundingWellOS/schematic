@@ -46,12 +46,10 @@ abstract class Schema
             return new Schema\StringSchema($json);
         }
 
-        // @codeCoverageIgnoreStart
         throw new \InvalidArgumentException(sprintf(
-            "No schema type available for %s",
+            "No schema type available for %s.",
             $json->type
         ));
-        // @codeCoverageIgnoreEnd
     }
 
     /**
