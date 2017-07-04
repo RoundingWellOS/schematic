@@ -4,6 +4,16 @@ namespace RoundingWell\Schematic;
 
 abstract class Schema
 {
+    protected const SCHEMA_TYPES = [
+        'array',
+        'boolean',
+        'integer',
+        'null',
+        'number',
+        'object',
+        'string'
+    ];
+
     /**
      * @param string $path
      * @return static
@@ -22,38 +32,16 @@ abstract class Schema
             throw new \InvalidArgumentException('Missing schema type.');
         }
 
-        if ($json->type === 'array') {
-            return new Schema\ArraySchema($json);
+        if ( ! in_array(strtolower($json->type), self::SCHEMA_TYPES)) {
+            throw new \InvalidArgumentException(sprintf(
+                'No schema type available for %s.',
+                $json->type
+            ));
         }
 
-        if ($json->type === 'boolean') {
-            return new Schema\BooleanSchema($json);
-        }
+        $schema = 'RoundingWell\\Schematic\\Schema\\' . ucfirst($json->type) . 'Schema';
 
-        if ($json->type === 'integer') {
-            return new Schema\IntegerSchema($json);
-        }
-
-        if ($json->type === 'null') {
-            return new Schema\NullSchema($json);
-        }
-
-        if ($json->type === 'number') {
-            return new Schema\NumberSchema($json);
-        }
-
-        if ($json->type === 'object') {
-            return new Schema\ObjectSchema($json);
-        }
-
-        if ($json->type === 'string') {
-            return new Schema\StringSchema($json);
-        }
-
-        throw new \InvalidArgumentException(sprintf(
-            "No schema type available for %s.",
-            $json->type
-        ));
+        return new $schema($json);
     }
 
     /**
