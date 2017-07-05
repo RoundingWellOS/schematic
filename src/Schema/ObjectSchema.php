@@ -36,7 +36,7 @@ class ObjectSchema extends Schema
      */
     public function required(): array
     {
-        return isset($this->schema->required) ? $this->schema->required : [];
+        return $this->schema->required ?? [];
     }
 
     public function isRequired($property): bool
