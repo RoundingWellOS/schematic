@@ -6,6 +6,8 @@
 [![Code Coverage](https://scrutinizer-ci.com/g/RoundingWellOS/schematic/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/RoundingWellOS/schematic/?branch=master)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/RoundingWellOS/schematic/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/RoundingWellOS/schematic/?branch=master)
 
+**THIS PROJECT IS NOT MAINTAINED.**
+
 Schematic is a [JSON Schema](http://json-schema.org/) parser that also supports
 Plain Old PHP Object (POPO) code generation. These generated models can either be
 used for as a starting point for domain entities or simply provide additional
